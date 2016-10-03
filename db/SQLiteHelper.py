@@ -12,6 +12,7 @@ class SqliteHelper(SqlHelper):
         建立数据库的链接
         :return:
         '''
+        # self.database = sqlite3.connect(DB_CONFIG['dbPath'],check_same_thread=False)
         self.database = sqlite3.connect(DB_CONFIG['dbPath'],check_same_thread=False)
         self.cursor = self.database.cursor()
         #创建表结构

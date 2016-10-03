@@ -27,6 +27,9 @@ class ProxySpider(object):
             sqlHelper = SqliteHelper()
             print 'validator beginning -------'
             validator = Validator(sqlHelper)
+            #******************
+            #  Dick: validate the ip in the DB
+            #******************
             count = validator.run_db()
             print 'validator end ----count=%s'%count
             if count[0]< MINNUM:
@@ -47,11 +50,12 @@ class ProxySpider(object):
                 proxys = [dict(t) for t in set([tuple(proxy.items()) for proxy in proxys])]
                 print 'end_proxys--%s',len(proxys)
                 print 'spider proxys -------%s'%type(proxys)
+                # ******************
+                #  Dick: validate the ip in the DB
+                # ******************
                 proxys = validator.run_list(proxys)#这个是检测后的ip地址
 
-
                 sqlHelper.batch_insert(sqlHelper.tableName,proxys)
-
 
                 print 'success ip =%s'%sqlHelper.selectCount()
                 sqlHelper.close()

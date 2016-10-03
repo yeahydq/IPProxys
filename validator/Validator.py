@@ -31,6 +31,7 @@ class Validator(object):
             self.deleteOld()
             #接着检测剩余的ip,是否可用
             results = self.sqlHelper.selectAll()
+            # Dick: 一次拿一个result的数据跑detect_db()
             self.detect_pool.map(self.detect_db,results)
             #将数据库进行压缩
             self.sqlHelper.compress()
@@ -39,8 +40,6 @@ class Validator(object):
         except Exception,e:
             print e
             return 0
-
-
 
     def run_list(self,results):
         '''
@@ -54,11 +53,6 @@ class Validator(object):
         #这个时候proxys的格式是[{},{},{},{},{}]
         return proxys
 
-
-
-
-
-
     def deleteOld(self):
         '''
         删除旧的数据
@@ -68,12 +62,8 @@ class Validator(object):
         self.sqlHelper.delete(SqliteHelper.tableName,condition)
 
 
-
-
-
     def detect_db(self,result):
         '''
-
         :param result: 从数据库中检测
         :return:
         '''
@@ -96,8 +86,6 @@ class Validator(object):
                 condition = "ip='"+ip+"' AND "+'port='+port
                 print 'fail ip =%s'%ip
                 self.sqlHelper.delete(SqliteHelper.tableName,condition)
-
-
 
     def detect_list(self,proxy):
         '''
@@ -127,7 +115,6 @@ class Validator(object):
                 proxy = None
         return proxy
         # return proxys
-
 
 if __name__=='__main__':
     # v = Validator()

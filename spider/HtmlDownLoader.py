@@ -14,7 +14,10 @@ class Html_Downloader(object):
             r = requests.get(url=url,headers=config.HEADER,timeout=config.TIMEOUT)
             r.encoding ='gbk'
             while count< config.RETRY_TIME:
+                # Dick: if direct get is ok, then return
+                #       else use the proxy to check for config.RETRY_TIME times
                 if (not r.ok) or len(r.content)<500 :
+                    # Dick: use the proxy to have a try
                     response = requests.get("http://127.0.0.1:%s/?types=0&count=10"%config.API_PORT)
                     if response.ok:
                         content =  response.text
